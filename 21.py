@@ -63,28 +63,73 @@ for line in input:
 		rules[str(eq)] = rule[1]
 		#print_m(eq)
 
-def proc_3(f):
-	return rules[str(f[0:3][0:3])]
-
-def proc_4(f):
-	return f
-
 def sub_m(m, row, col, size):
 	return [row[col:col+size] for row in m[row:row+size]]
+
+def part_m(m, size, replacer):
+	new = []
+	for row in range(0, len(m), size):
+		for col in range(0, len(m[row]), size):
+			m_sub = sub_m(m, row, col, size)
+			new_m_sub = replacer(m_sub)
+			if col == 0: # new rows, simple append
+				new += [row[:] for row in new_m_sub] # copy from rule
+			else: # add to existing rows
+				for new_row in range(len(new_m_sub)):
+					new_row_i = len(new) - len(new_m_sub) + new_row
+					new[new_row_i] += new_m_sub[new_row]
+	return new
+
+def replace_m(m_r):
+	replacement = rules[str(m_r)]
+#	print("replacement for ")
+#	print_m(m_r)
+#	print("\nis")
+#	print_m(replacement)
+	return replacement
 	
 fractal = [[0,1,0],[0,0,1],[1,1,1]]	
-print_m(fractal)
+# print_m(fractal)
+iterations = 18
 
-for iter in range(10):
+for iter in range(iterations):
 	l = len(fractal)
-	if l % 3 == 0:
-		fractal = proc_3(fractal)
-	elif l % 4 == 0:
-		fractal = proc_4(fractal)
+	if l % 2 == 0:
+		fractal = part_m(fractal, 2, replace_m)
+	elif l % 3 == 0:
+		fractal = part_m(fractal, 3, replace_m)
 	else:
 		raise Exception("invalid fractal size")
-	print_m(fractal)
-	
+	#print_m(fractal)
+	print("finished iteration " + str(iter + 1))
+
+# count ones
+sum = 0
+for row in fractal:
+	for col in row:
+		sum += col
+print("fractal has " + str(sum) + " ones after " + str(iterations) + " iterations")
+
+# 117 is too low but is the right answer for someone else?
+
+"""
+for match in rules:
+	replacement = rules[match]
+	print("for this match")
+	print(match)
+	print("replace with this")
+	print_m(replacement)
+
 test = [[str(row) + ":" + str(col) for col in range(4)] for row in range(4)]
 print_m(test)
 print_m(sub_m(test,0,2,2))
+
+def replace(m):
+	size = len(m)
+	size += 1
+	return [[size for _ in range(size)] for _ in range(size)]
+
+test = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
+print_m(test)
+print_m(part_m(test, 2, replace))
+"""
