@@ -1,3 +1,5 @@
+import matrix_utils
+
 def equiv(m):
 	if len(m) == 2:
 		equivs = equiv_2(m)
@@ -42,12 +44,6 @@ def equiv_3(m):
 	for r in rotations:
 		rots_and_flips += [r, flip_3(r)]
 	return rots_and_flips
-
-def print_m(m):
-	for l in m:
-		l_s = [str(e) for e in l]
-		print(' '.join(l_s))
-	print()
 
 
 input = open('21.txt').readlines()
