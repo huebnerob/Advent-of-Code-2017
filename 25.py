@@ -31,7 +31,7 @@ pos = int(len(memory)/2)
 print('starting program...')
 
 for t in range(halt_at):
-	if t % (halt_at/100) == 0:
+	if t % int(halt_at/100) == 0:
 		print("at t=" + str(t))
 	i = state * 6 + 3 * memory[pos]
 	write, move, state = prgm[i], prgm[i+1], prgm[i+2]
