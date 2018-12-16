@@ -2,7 +2,7 @@
 
 import UIKit
 
-let input = Array("1111")
+let input = Array("11111111111111111")
 
 for i in 0..<input.count {
     let values = (Int(input[i%input.count]),
